@@ -36,10 +36,14 @@ class Template(QWidget):
     def __init__(self):
         super().__init__()
         grid = QGridLayout(self)
-        self.title ="Image Data Annotation Tool"
-        self.setWindowTitle(self.title)
+    
+
+
+
+
         
-        
+
+
 #Buttons alignment and Fucntions
 
 #PervImage Button
@@ -71,7 +75,6 @@ class Template(QWidget):
         Browse_btn.setIcon(QIcon('icons/camera.png'))
         Browse_btn.setStyleSheet("background-color : White")
         Browse_btn.setIconSize(QSize(30, 30))
-        Browse_btn.setToolTip("Add Image")
        
 
 # Save Button
@@ -82,7 +85,6 @@ class Template(QWidget):
         Save_btn.setIcon(QIcon('icons/floppy-disk.png'))
         Save_btn.setStyleSheet("background-color : White")
         Save_btn.setIconSize(QSize(30, 30))
-        Save_btn.setToolTip("Save")
         
 
 # Clear Button
@@ -160,13 +162,18 @@ class Template(QWidget):
         detect_btn.setFixedSize(40, 40)
         detect_btn.setStyleSheet("background-color : White")
         detect_btn.clicked.connect(self.detectObjects)
+<<<<<<< HEAD
+        detect_btn.setIcon(QIcon('icons/face-detection.png'))
+        detect_btn.setIconSize(QSize(30, 30))
+        detect_btn.setToolTip("Face Detection")
+=======
         detect_btn.setIcon(QIcon('icons/artificial-intelligence.png'))
         detect_btn.setIconSize(QSize(30, 30))
         detect_btn.setToolTip("Car Detection")
+>>>>>>> eebc027c910cce437f1a14f76013715816147602
 
         verticalSpacer = QSpacerItem(40, 20,  QSizePolicy.Minimum, QSizePolicy.Expanding)
         grid.addItem(verticalSpacer, 6, 0, Qt.AlignTop)
-        
 
     #Buttons  Layouts and widgets and Alignments with their coonection to functions
 
@@ -353,11 +360,15 @@ class Template(QWidget):
     
     def detectObjects(self):
         # Load the image to detect objects in
-        imagePath = self.fname[0][self.current]
+        imagePath = self.fname[0][0]
         image = cv2.imread(imagePath)
         
         # Load the Haar cascade classifier
+<<<<<<< HEAD
+        cascade_path = "haarcascade_profileface.xml"
+=======
         cascade_path = "haarcascade_car.xml"
+>>>>>>> eebc027c910cce437f1a14f76013715816147602
         cascade = cv2.CascadeClassifier(cascade_path)
 
         # Convert the image to grayscale and detect objects using the cascade
@@ -365,10 +376,10 @@ class Template(QWidget):
         objects = cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
 
         # Draw rectangles around the detected objects on the image
-        #self.object_coords = []
+        self.object_coords = []
         for (x, y, w, h) in objects:
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            #self.object_coords.append((x, y, x + w, y + h))
+            self.object_coords.append((x, y, x + w, y + h))
 
         # Display the image in the application window
         qimage = QImage(image.data, image.shape[1], image.shape[0], QImage.Format_RGB888).rgbSwapped()
@@ -500,7 +511,7 @@ class Template(QWidget):
             writer.writerows([a])
             for row in zip(self.mouse_press_list,self.mouse_release_list):
                 writer.writerow(row)
-            #writer.writerows(self.object_coords)
+            writer.writerows(self.object_coords)
             
 
          self.Csv+=1    
@@ -512,7 +523,6 @@ if __name__ == '__main__':
     splash=Splashscreen()
     splash.show()
     splash.progress()
-    splash.close()
     gui = Template()
     gui.show()
     app.exec_()
